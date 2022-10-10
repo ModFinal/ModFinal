@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<settings>
+		<setting name="jdbcTypeForNull" value="NULL"/>
+	</settings>
+	<typeAliases>
+	<typeAlias type="com.myweb.home.login.model.AccountDTO" alias="accountDto" />
+	<typeAlias type="com.myweb.home.member.vo.MemberVO" alias="memberVo" />
+	<typeAlias type="com.myweb.home.notice.model.NoticeDTO" alias="noticeDto" />
+	<typeAlias type="com.myweb.home.main.model.MainDTO" alias="mainDto" />
+	<typeAlias type="com.myweb.home.upload.model.PhotoUploadDTO" alias="photoUploadDto" />
+	<typeAlias type="com.myweb.home.info.model.InfoDTO" alias="infoDto" />
+	<typeAlias type="com.myweb.home.info.model.ProfileStaticsDTO" alias="profileStaticsDto" />
+	<typeAlias type="com.myweb.home.board.model.BoardStaticsDTO" alias="boardStaticsDto" />
+	<typeAlias type="com.myweb.home.board.model.BoardDTO" alias="boardDto" />
+	<typeAlias type="com.myweb.home.board.model.Criteria" alias="criteria" />
+	<typeAlias type="com.myweb.home.board.model.SearchCriteria" alias="searchCriteria" />
+	<typeAlias type="com.myweb.home.board.model.ReviewDTO" alias="reviewDto" />
+	<typeAlias type="com.myweb.home.board.model.FavoriteDTO" alias="favoriteDto" />
+	</typeAliases>  
+</configuration>

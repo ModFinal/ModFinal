@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="memberMapper">
+	<insert id="register" parameterType="memberVo">
+		INSERT INTO 
+		ACCOUNT(ACCOUNTID
+			  , PASSWORD
+			  , NAME
+			  , EMAIL
+			  , PHONE
+			  , ADDRESS1
+			  , ADDRESS2
+			  , ADDRESS3
+			  , ADDRESS4
+			  , ADMIN
+			  , REGISTERDATE)
+		VALUES(#{accountid}
+			 , #{password}
+			 , #{name}
+			 , #{email}
+			 , #{phone}
+			 , #{address1}
+			 , #{address2}
+			 , #{address3}
+			 , #{address4}
+			 , 'N'
+			 , SYSDATE)
+	</insert>
+	
+	<!-- 아이디 중복 확인 -->
+	<select id="idOverlap" parameterType="memberVo" resultType="int">
+		SELECT COUNT(ACCOUNTID) FROM ACCOUNT 
+		WHERE ACCOUNTID = #{accountid}
+	</select>
+	
+	<!-- 회원 정보 수정 -->
+	<select id="userModify" resultType="String">
+		UPDATE ACCOUNT
+		   SET NAME = #{name}
+		     , PASSWORD = #{password}
+		   	 , PHONE = #{phone}
+		   	 , ADDRESS1 = #{address1}
+		   	 , ADDRESS2 = #{address2}
+		   	 , ADDRESS3 = #{address3}
+		   	 , ADDRESS4 = #{address4}
+		   	 , EMAIL = #{email}
+		 WHERE ACCOUNTID = #{accountid}
+	</select>
+	
+	<!-- 회원 정보 삭제 -->
+	<select id="signout" >
+		DELETE FROM ACCOUNT
+		 WHERE ACCOUNTID = #{accountid}
+	</select>
+	
+	<!-- 회원 정보 불러오기 -->
+	<select id="selectAll" resultType="memberVo">
+		SELECT * FROM ACCOUNT
+		 WHERE ACCOUNTID = #{accountid}
+	</select>
+	
+</mapper>

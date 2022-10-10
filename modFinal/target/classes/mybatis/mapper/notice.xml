@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="noticeMapper">
+	<select id="getNextSeq" resultType="_int">
+		SELECT NOTICE_SEQ.NEXTVAL FROM DUAL
+	</select>
+	<select id="selectAllData" resultType="noticeDto">
+		SELECT NOTICEID as notId 
+			, ACCOUNTID as accId
+			, TITLE
+			, CONTENT
+			, CREATEDATE as createDate
+			, VIEWCNT	
+		  FROM NOTICE
+		  ORDER BY CREATEDATE DESC
+	</select>
+	
+	<select id="selectDetailData" resultType="noticeDto">
+		SELECT NOTICEID as notId
+			, ACCOUNTID as accId
+			, TITLE
+			, CONTENT
+			, CREATEDATE
+			, VIEWCNT	
+		  FROM NOTICE
+		 WHERE NOTICEID = #{notId}
+	</select>
+	
+	<insert id="insertData" parameterType ="noticeDto">
+		INSERT INTO NOTICE(NOTICEID, ACCOUNTID, TITLE, CONTENT, CREATEDATE)
+			VALUES(#{notId}, #{accId}, #{title}, #{content}, SYSDATE)
+	</insert> 
+	<delete id="deleteData">
+		DELETE FROM NOTICE
+			WHERE NOTICEID = #{notId}
+	</delete>
+	<update id="updateData" parameterType="noticeDto">
+		UPDATE NOTICE
+		   SET TITLE = #{title}
+		     , CONTENT = #{content}
+		 WHERE NOTICEID = #{notId}
+	</update>
+</mapper>

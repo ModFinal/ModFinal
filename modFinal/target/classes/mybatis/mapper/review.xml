@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  <mapper namespace="reviewMapper">
+   <insert id = "insertReview" parameterType="reviewDto">
+   INSERT INTO REVIEW (ID, BID,ACCOUNTID, CONTENT, DELETED, HIDDEN)
+   VALUES(REVIEW_SEQ.NEXTVAL
+           ,#{bId},#{accountId}, #{content}     
+           , 'N' ,'N')
+   </insert>
+  <select id ="ReviewList" resultType="reviewDto">
+  
+  SELECT R.ID
+       , R.ACCOUNTID
+       , R.CONTENT
+       , A.ACCOUNTID
+       , R.CREATEDATE
+       , R.STARSCORE
+       , R.DELETED
+       , R.HIDDEN
+   FROM REVIEW R
+   JOIN ACCOUNT A
+     ON R.ACCOUNTID = A.ACCOUNTID
+   WHERE R.BID = #{bId}
+  </select>
+  <select id ="getReview" resultType="reviewDto">
+  
+  SELECT R.ID
+       , R.ACCOUNTID
+       , R.CONTENT
+       , A.ACCOUNTID
+       , R.CREATEDATE
+       , R.STARSCORE
+       , R.DELETED
+       , R.HIDDEN
+   FROM REVIEW R
+   JOIN ACCOUNT A
+     ON R.ACCOUNTID = A.ACCOUNTID
+   WHERE R.ID = #{id}
+  </select>
+  <update id="deleteData" parameterType="reviewDto">
+	  UPDATE REVIEW
+	     SET DELETED = 'Y'
+	   WHERE ID =#{id}
+	</update>
+  <update id="updateData" parameterType="reviewDto">
+	  UPDATE REVIEW
+	     SET CONTENT = #{content}
+	   WHERE ID =#{id}
+	</update>
+  </mapper>

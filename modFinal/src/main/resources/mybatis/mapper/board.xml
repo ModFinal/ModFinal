@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  <mapper namespace="boardMapper">
+      
+ 
+       <select id ="listCount" resultType="int">
+      <![CDATA[
+          SELECT COUNT(bid)
+          FROM BOARD
+          WHERE BID > 0
+          ]]>
+       </select>
+       <!-- 검색 -->
+		<select id="listSearch" resultType="boardDto" parameterType="SearchCriteria">
+				SELECT BID, BTITLE, BCONTENT, ACCOUNTID, PCONDITION,PRICE,DEALMETHOD
+				 FROM (
+				        SELECT  BID, BTITLE, BCONTENT, ACCOUNTID, PCONDITION,PRICE,DEALMETHOD,
+				        ROW_NUMBER() OVER(ORDER BY BID DESC) AS rNum
+				        FROM Board
+				        WHERE 1=1
+				        AND BTITLE LIKE '%' || #{ keyword } || '%'
+				      ) board
+				    WHERE rNum BETWEEN #{rowStart} AND #{rowEnd}
+		</select>
+
+		<select id="countSearch" resultType="int">
+		<![CDATA[
+		   SELECT COUNT(BID)
+		   FROM BOARD
+		   WHERE BID > 0
+		  ]]>
+           </select>
+           
+        <select id = "selectBoardAllData" resultType="boardDto">
+        	SELECT *
+        	  FROM BOARD
+        	 WHERE BID = #{bId}
+        	
+        </select>
+           
+		<select id = "selectBoardData" resultType="boardDto">
+			SELECT B.BID as bId
+				, B.ACCOUNTID as accountId
+				, B.BTITLE as bTitle
+				, B.PRICE as price
+				, B.BCONTENT as bContent
+				, B.PCONDITION as pCondition
+				, B.DEALMETHOD as dealMethod
+				, B.CREATEDATE as createDate
+				, B.BUYSTATUS as buyStatus
+				, B.VIEWCNT as viewCnt
+				, CONCAT(P.URL, '/' || P.UUIDNAME) as url
+				, C.CATEGORYNAME as cateName
+				, A.NAME AS userName
+			FROM BOARD B
+			RIGHT JOIN PHOTOUPLOAD P
+			ON B.BID = P.BID
+			RIGHT JOIN ACCOUNT A
+			ON A.ACCOUNTID  = B.ACCOUNTID
+			RIGHT JOIN CATEGORY C
+			ON B.CATEGORYID = C.CATEGORYID
+			WHERE B.BID = #{bId}
+		</select>
+		
+		<select id="selectBoardStatics" parameterType="boardStaticsDto" resultType="boardStaticsDto">
+			SELECT  BOARDSTATID 
+			 , ACCOUNTID as accId
+			 , BID
+		     , VIEWED 
+		     , LATEST_VIEWED_DATE AS latestView
+		  FROM BOARD_STATICS
+		 WHERE BID = #{bId}
+		</select>
+		<insert id="insertBoardStatics" parameterType="boardStaticsDto">
+			INSERT INTO BOARD_STATICS
+		     VALUES(BOARD_STATICS_SEQ.NEXTVAL
+		         , #{accId} , #{bId}, 'Y', SYSDATE)
+		</insert>
+		<update id="updateBoardStatics" parameterType="boardStaticsDto">
+			UPDATE BOARD_STATICS
+		   SET LATEST_VIEWED_DATE = SYSDATE
+		 WHERE BID = #{bId}
+		</update>
+		<update id="updateViewCnt" parameterType="boardDto">
+			UPDATE BOARD
+		   SET VIEWCNT = #{viewCnt} + 1
+		 WHERE BID = #{bId}
+		</update>
+		
+		<select id="getNextSeq" resultType="_int">
+		SELECT  BOARD_SEQ.NEXTVAL FROM DUAL
+	</select>
+	<insert id="insertData" parameterType="boardDto">
+		INSERT INTO BOARD(BID, BTITLE, BCONTENT, ACCOUNTID, CATEGORYID, DEALMETHOD, PCONDITION, PRICE, CREATEDATE)
+		     VALUES(#{bId}, #{bTitle}, #{bContent}, #{accountId}, #{cateId}, #{dealMethod}, #{pCondition}, #{price}, SYSDATE)
+	</insert>
+	<select id="selectCateDatas" resultType="boardDto">
+		SELECT CATEGORYID as cateId
+			,  CATEGORYNAME as cateName
+		FROM CATEGORY
+		ORDER BY CATEGORYID ASC
+	</select>
+	<update id="updateContentData" parameterType="boardDto">
+		UPDATE BOARD
+		   SET BTITLE = #{bTitle}
+		   , BCONTENT = #{bContent}
+		   , CATEGORYID = #{cateId}
+		   , DEALMETHOD = #{dealMethod}
+		   , PCONDITION = #{pCondition}
+		   , PRICE =#{price}
+		 WHERE BID = #{bId}
+	</update>
+	<delete id="deleteBoardData">
+		DELETE FROM BOARD
+			WHERE BID = #{bId}
+	</delete>
+	<select id = "selectFavor" resultType="favoriteDto">
+			SELECT
+			   FAVORITEID as favId
+			 , ACCOUNTID as accId
+			 , BID
+		  FROM FAVORITE
+		 WHERE BID = #{bId} AND ACCOUNTID = #{accId}
+	</select>
+	<insert id="insertFavor" parameterType="favoriteDto">
+			INSERT INTO FAVORITE
+		     VALUES(FAVORITE_SEQ.NEXTVAL
+		         , #{accId} , #{bId})
+	</insert>
+	<delete id = "deleteFavor" >
+			DELETE FROM FAVORITE
+			WHERE BID = #{bId} AND ACCOUNTID = #{accId}
+	</delete>
+  </mapper>

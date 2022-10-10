@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="photoUploadMapper">
+	<select id="getCount" resultType="_int">
+		SELECT COUNT(*) FROM PHOTOUPLOAD
+		 WHERE BID = #{bId}
+	</select>
+	
+	<insert id="insertData" parameterType="photoUploadDto">
+		INSERT INTO PHOTOUPLOAD
+		     VALUES(PHOTOUPLOAD_SEQ.NEXTVAL
+		     	  , #{bId} 	   , #{accId}
+		          , #{uuidName}, #{fileName}
+		          , #{location}, #{url}
+		          , #{fileSize}, #{fileType})
+	</insert>
+	
+	<select id="selectBoardDatas" resultType="photoUploadDto">
+		SELECT *
+		  FROM PHOTOUPLOAD
+		 WHERE BID = #{bId}
+	</select>
+	
+	<select id="selectProfileData" resultType="photoUploadDto">
+		SELECT *
+		  FROM PHOTOUPLOAD
+		 WHERE ACCOUNTID = #{accId}
+	</select>
+	
+	<update id="updateFileData" parameterType="photoUploadDto">
+		UPDATE PHOTOUPLOAD
+		   SET UUIDNAME = #{uuidName}   
+           , FILENAME = #{fileName}
+		   , FILESIZE = #{fileSize}
+		   , FILETYPE = #{fileType}
+		 WHERE BID = #{bId}
+	</update>
+	
+	<insert id="insertProfileData" parameterType="photoUploadDto">
+		INSERT INTO PHOTOUPLOAD
+		     VALUES(PHOTOUPLOAD_SEQ.NEXTVAL
+		     	  , NULL 	   , #{accId}
+		          , #{uuidName}, #{fileName}
+		          , #{location}, #{url}
+		          , #{fileSize}, #{fileType})
+	</insert>
+</mapper>

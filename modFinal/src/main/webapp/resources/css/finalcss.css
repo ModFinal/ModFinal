@@ -1,0 +1,104 @@
+@charset "UTF-8";
+
+a {
+  text-decoration-line: none;
+}
+
+a:link {
+	color:green;
+}
+
+a:visited {
+	color:green;
+	}
+	
+.bluebtn {	
+	width:100%;
+}
+
+.textcenter  {
+	text-align: center;
+}
+
+.a.hover {
+	background-color : gray;
+}
+
+.div-bc{
+	height:300px;
+	width:300px;
+	background-color: #999999;
+}
+
+.div-left {
+	float:left;
+}
+
+.div-right {
+	float:right;
+}
+
+.div-center {
+	margin: 50px auto;
+	height:600px;
+	width: 900px;
+}
+
+.div-info {
+	height:300px;
+	width:600px;
+	background-color: #cccccc;
+}
+
+.div1-profile-pic {
+	background-color: skyblue;
+	margin: -120px 0 0 -10px ;
+	width: 200px;
+	height: 200px;
+}
+
+.div1-profile {
+	margin: 20px 0 0 0;
+	height: 50px;
+	width: 300px;
+}
+
+.div-middle {
+	position: relative;
+	margin: -30px 0 0 -90px;
+	top: 50%;
+	left: 50%;
+}
+
+.table-divcenter {
+	margin: 90px auto auto 70px;
+}
+
+.table-divcenter2 {
+	margin: 70px 30px auto 70px;
+}
+
+.table-underline-off {
+	border : none;
+}
+
+.button-right {
+	margin: 0 5px 5px 0;
+	float:right;
+}
+
+img {
+  max-width: 100%;
+}
+
+.text_wide {
+	width:400px; 
+	border-style: solid;
+    border-width: revert;
+    border-color: #00B050;
+}
+
+.upmargin {
+	margin:-100px 0 0 0;
+}
+

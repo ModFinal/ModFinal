@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="InfoMapper">
+	<select id="selectUserDatas" resultType="infoDto">
+	      SELECT ACCOUNTID as accId
+			   , NAME as name
+			   , TRUNC(SYSDATE) - TRUNC(REGISTERDATE) as regDate
+			   , VISITCNT as visitCnt
+			FROM ACCOUNT 
+		   WHERE ACCOUNTID = #{accId}
+	</select>
+	<select id="selectUserPhoto" resultType="infoDto">
+		SELECT 
+			ACCOUNTID as accId
+			, CONCAT(URL, '/' || UUIDNAME) as url
+		  FROM PHOTOUPLOAD
+		 WHERE ACCOUNTID = #{accId} AND URL = '/static/account/upload'
+	</select>
+	<select id="selectPurchaseCount" resultType="infoDto">
+		SELECT BUYSTATUS as buyStatus
+			 , COUNT(*) as buyCnt
+		  FROM BOARD 
+		 WHERE BUYSTATUS = #{accId}
+		 GROUP BY BUYSTATUS
+	</select>
+	
+	<select id="selectShoppingList" resultType = "infoDto">
+	   SELECT B.BID as bId
+		    , B.BTITLE as bTitle
+		    , B.PRICE as price
+		    , CONCAT(P.URL, '/' || P.UUIDNAME) as url
+		 FROM BOARD B
+		 RIGHT JOIN PHOTOUPLOAD P
+		 ON B.BID  = P.BID
+		 WHERE B.BUYSTATUS = #{accId}
+		 ORDER BY B.CREATEDATE DESC
+	 </select>
+	 
+	 <select id="selectFavoriteList" resultType = "infoDto">
+	 	SELECT B.BID as bId
+			 , B.BTITLE as bTitle
+			 , B.PRICE as price
+			 , CONCAT(P.URL, '/' || P.UUIDNAME) as url
+			 , F.ACCOUNTID as accId
+		  FROM BOARD B
+		 RIGHT JOIN FAVORITE F
+		 ON B.BID = F.BID
+		 RIGHT JOIN PHOTOUPLOAD P
+		 ON B.BID = P.BID
+		 WHERE F.ACCOUNTID = #{accId}
+	 	 ORDER BY B.CREATEDATE DESC
+	 </select>
+	 
+	 <select id="selectSellNum" resultType = "infoDto">
+	 	SELECT BUYSTATUS
+	 	     , COUNT(*) AS sellCnt
+		  FROM BOARD 
+ 		 WHERE ACCOUNTID = #{accId} AND BUYSTATUS IS NOT NULL
+ 	     GROUP BY BUYSTATUS
+	 </select>
+	 <select id="selectMystoreProfile" resultType="infoDto">
+		SELECT  ACCOUNTID as accId
+			  , NAME as name
+		      , VISITCNT AS visitCnt
+		   FROM ACCOUNT
+		  WHERE ACCOUNTID = #{accId}
+	</select>
+	<select id ="selectSellingList" resultType="infoDto">
+		SELECT B.BID as bId
+	 		 , B.BTITLE as bTitle
+	 		 , CONCAT(P.URL, '/' || P.UUIDNAME) as url
+	 		 , B.PRICE as price
+  		  FROM BOARD B
+		 RIGHT JOIN PHOTOUPLOAD P
+    		ON B.BID = P.BID
+ 		 WHERE B.ACCOUNTID = #{accId} AND BUYSTATUS IS NULL 
+	</select>
+	
+	 <select id="selectStatics" parameterType="profileStaticsDto" resultType="profileStaticsDto">
+		SELECT PROFILEID 
+			 , ACCOUNTID as accId
+		     , VISITED 
+		     , LATEST_VISITED_DATE AS latestVisit
+		  FROM PROFILE_STATICS
+		 WHERE ACCOUNTID = #{accId}
+	</select>
+	<insert id="insertStatics" parameterType="profileStaticsDto">
+		INSERT INTO PROFILE_STATICS
+		     VALUES(PROFILE_STATICS_SEQ.NEXTVAL
+		          , #{accId}, 'Y', SYSDATE)
+	</insert>
+	<update id="updateStatics" parameterType="profileStaticsDto">
+		UPDATE PROFILE_STATICS
+		   SET LATEST_VISITED_DATE = SYSDATE
+		 WHERE ACCOUNTID = #{accId}
+	</update>
+	<update id="updateVisitCnt" parameterType="infoDto">
+		UPDATE ACCOUNT
+		   SET VISITCNT = #{visitCnt} + 1
+		 WHERE ACCOUNTID = #{accId}
+	</update>
+</mapper>
