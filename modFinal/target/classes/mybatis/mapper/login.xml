@@ -21,4 +21,7 @@
 		WHERE ACCOUNTID = #{accountid} 
 		AND EMAIL = #{email}
  </select> 
+   <update id="update_pw" parameterType="accountDto">
+		UPDATE ACCOUNT SET PASSWORD =#{password} WHERE ACCOUNTID =#{accountid}
+ </update> 
   </mapper>

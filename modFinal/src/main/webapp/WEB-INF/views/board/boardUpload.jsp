@@ -76,7 +76,7 @@
 		</tr>
 		
 	</table>
-		<button class="btn btn-primary" onclick="location.href='/'">취소</button>
+		<button class="btn btn-primary" onclick="location.href='/home'">취소</button>
 		<button class="btn btn-primary" type="submit">등록</button>
 	</form>
 	</div>
