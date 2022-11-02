@@ -9,6 +9,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.mail.HtmlEmail;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,30 +69,89 @@ public class LoginService<accountDTO> {
 			out.close();
 			return false;
 		 }
+   
+	
+    public void sendEmail(AccountDTO DTO,String div) throws Exception {
+    	
+    	String charSet = "utf-8";
+    	String hostSMTP = "smtp.gmail.com";
+    	String hostSMTPid = "hope30529@gmail.com";
+    	String hostSMTPpwd = "byxkxugbviucxxuc";
+    
+    
+        String fromEmail = "hope30529@gmail.com";
+        String fromName = "HeemangPark";
+        String subject = "";
+        String msg="";
+        
+        if(div.equals("findpw")) {
+        	subject = "지구마켓 임시 비밀번호 입니다.";
+        	msg += "<div align = 'center' style='border:1px solid black; font-family:verdana'>";
+        	msg += "<h3 style='color: blue;'>";
+    		msg += DTO.getAccountid() + "님의 임시 비밀번호 입니다. 비밀번호를 변경하여 사용하세요.</h3>";
+    		msg += "<p>임시 비밀번호 : ";
+    		msg += DTO.getPassword() + "</p></div>";
+        }
+        
+        String mail = DTO.getEmail();
+        try {
+        	  HtmlEmail email = new HtmlEmail();
+        	  email.setDebug(true);
+        	  email.setCharset(charSet);
+        	  email.setSSL(false);
+        	  email.setHostName(hostSMTP);
+        	  email.setSmtpPort(465);
+        	  
+        	  email.setAuthentication(hostSMTPid, hostSMTPpwd);
+        	  email.setTLS(true);
+              email.addTo(mail, charSet);
+              email.setFrom(fromEmail, fromName, charSet);
+              email.setSubject(subject);
+              email.setHtmlMsg(msg);
+              email.send(); 	  
+        } catch (Exception e) {
+        	System.out.println("메일발송 실패 : " + e);
+        }
+    }
 
-
-	public AccountDTO find_pw(HttpServletResponse response,HttpSession session, AccountDTO accountDTO) throws Exception {
+	public void find_pw(HttpServletResponse response,HttpSession session, AccountDTO accountDTO) throws Exception {
 					logger.info("find_pw({})",accountDTO);
 					response.setContentType("text/html;charset=utf-8");
+					//AccountDTO data  = dao.find_pw(accountDTO);
 					PrintWriter out = response.getWriter();
-					AccountDTO data  = dao.find_pw(accountDTO);
 					
-					if(data == null) {//가입되지 않은 정보
+					if(accountDTO.getAccountid() == null) {
 						    out.println("<script>");
-							out.println("alert('가입된 비밀번호가 없습니다.');");
+							out.println("alert('가입된 아이디가 없습니다.');");
 							out.println("history.go(-1);");
 							out.println("</script>");
 							out.close();
 						
-						return null;
+					
 				
+					}else if(!accountDTO.getEmail().equals(accountDTO.getAccountid())) {
+						out.println("잘못된 이메일 입니다.");
+						out.close();
 					}else {
-						 session.setAttribute("passData", data);
-						return accountDTO;
+						String pw = "";
+						for(int i = 0; i<12; i++) {
+							pw += (char)((Math.random() * 26) + 97);
+						}
+						accountDTO.setPassword(pw);
+						dao.update_pw(accountDTO);
+						sendEmail(accountDTO, "find_pw");
+						
+						out.print("이메일로 임시 비밀번호를 발송하였습니다.");
+						out.close();
+					//	 session.setAttribute("passData", data);
+					//	return accountDTO;
 			
 					
 				}
 }
+
+
+
 }
 	
 

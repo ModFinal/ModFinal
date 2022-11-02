@@ -41,6 +41,10 @@ public class LoginDAO {
 		
 	}
 	
+	public int update_pw(AccountDTO accountDTO) throws Exception {
+		 return session.update("loginMapper.update_pw", accountDTO);
+	}
+	
 }
 
 

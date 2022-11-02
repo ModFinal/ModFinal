@@ -115,11 +115,10 @@ public class LoginController {
 	
 	//비밀번호 찾기 성공
 	@RequestMapping(value = "/login/find_pw", method =RequestMethod.POST)
-	public String find_pw(@ModelAttribute AccountDTO accountDTO,
+	public void find_pw(@ModelAttribute AccountDTO accountDTO,
 			HttpServletResponse response,HttpSession session) throws Exception{
-		service.find_pw(response,session, accountDTO);
+		service.find_pw(response, session, accountDTO);
 		
-		return "/login/find_pw";
     }
 	
 	
