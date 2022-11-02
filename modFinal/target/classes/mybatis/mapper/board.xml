@@ -14,16 +14,32 @@
        </select>
        <!-- 검색 -->
 		<select id="listSearch" resultType="boardDto" parameterType="SearchCriteria">
-				SELECT BID, BTITLE, BCONTENT, ACCOUNTID, PCONDITION,PRICE,DEALMETHOD
-				 FROM (
-				        SELECT  BID, BTITLE, BCONTENT, ACCOUNTID, PCONDITION,PRICE,DEALMETHOD,
-				        ROW_NUMBER() OVER(ORDER BY BID DESC) AS rNum
-				        FROM Board
-				        WHERE 1=1
-				        AND BTITLE LIKE '%' || #{ keyword } || '%'
-				      ) board
-				    WHERE rNum BETWEEN #{rowStart} AND #{rowEnd}
-		</select>
+SELECT board.bId AS bId
+     , board.bTitle AS bTitle
+     , board.bContent AS bContent
+     , board.accId AS accId
+     , board.condt AS condt
+     , board.price AS price
+     , board.dealMethod AS dealMethod 
+     , board.url AS url
+    FROM (
+          SELECT B.BID AS bId
+        , B.BTITLE AS bTitle
+        , B.BCONTENT AS bContent
+        , B.ACCOUNTID AS accId
+        , B.PCONDITION AS condt
+        , B.PRICE AS price
+        , B.DEALMETHOD AS dealMethod
+        , CONCAT(P.URL, '/' || P.UUIDNAME) AS url
+        , ROW_NUMBER() OVER(ORDER BY B.BID DESC) AS rNum 
+        FROM Board B
+        RIGHT JOIN PHOTOUPLOAD P 
+        ON B.BID = P.BID
+        WHERE B.BID = P.BID
+        AND BTITLE LIKE '%' || #{ keyword } || '%'
+      ) board 
+    WHERE rNum BETWEEN #{rowStart} AND #{rowEnd}
+</select>
 
 		<select id="countSearch" resultType="int">
 		<![CDATA[

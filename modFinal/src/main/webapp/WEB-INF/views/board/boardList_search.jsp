@@ -19,10 +19,12 @@
 
 	
 	<section class="container" style="width:1250px;">
-		
+		  <br>
+		  <br>
+		  <br>
             <div class="search">
 			  <div>
-				<h2>'${scri.keyword}'상품 목록</h2>
+				<h2  style="color:#00B050;" >'${scri.keyword}'상품 목록</h2>
 			  </div>
 			 </div> 
 			<hr>
@@ -32,32 +34,32 @@
 				<c:forEach items="${list}" var="list">
 
 					<div style="width:1250px; height:250px;" onclick="location.href='/home/board/detail?id=${list.bId}'">
-							<div style="width:250px; height:250px; background-color:skyblue; float:left; vertical-align:middle;">
-							 <img src="${list.url}" style="width:250px; height:250px;"> 
+							<div style="width:250px; height:250px; background-color:white; float:left; vertical-align:middle;">
+							 <img src="<%=request.getContextPath()%>${list.url}" style="width:250px; height:250px;"> 
 							</div>
 						
-							<div style="width:1000px; height:250px; background-color:darkgray; float:left;">
+							<div style="width:1000px; height:250px; background-color:#EAEAEA; float:left;">
 								<table style="width:1000px; height:250px; text-align:right;">
 									<tr>
-										<td style="width:100px;">${list.bTitle}</td>
+										<td style="width:450px; text-align:left;">${list.bTitle}</td>
 										<td style="width:750px;"></td>
 										<td></td>
 										<td></td>
-										<td style="width:100px;">${list.pCondition} &nbsp;&nbsp;&nbsp;</td>
+										<td style="width:450px;">${list.pCondition} &nbsp;&nbsp;&nbsp;</td>
 									</tr>
 									<tr>
-										<td style="width:100px;"></td>
+										<td style="width:450px;"></td>
 										<td style="width:750px;"></td>
 										<td></td>
 										<td></td>
-										<td style="width:100px;">${list.dealMethod} &nbsp;&nbsp;&nbsp;</td>
+										<td style="width:450px;">${list.dealMethod} &nbsp;&nbsp;&nbsp;</td>
 									</tr>
 									<tr>
-										<td style="width:100px;">${list.accountId}</td>
+										<td style="width:450px;">${list.accountId}</td>
 										<td style="width:750px;"></td>
 										<td></td>
 										<td></td>
-										<td style="width:100px;">${list.price} &nbsp;&nbsp;&nbsp;</td>
+										<td style="width:450px;">${list.price} &nbsp;&nbsp;&nbsp;</td>
 									</tr>
 								</table>
 							</div>

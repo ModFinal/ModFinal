@@ -5,38 +5,56 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ include file="../module/head.jsp" %>
 
-<head>
+<head profile="http://www.w3.org/2005/10/profile">
    <meta charset="UTF-8">
 	<style type="text/css">
 	   .profile-size{
-		margin-top: 8%;
-	    margin-bottom: 3%;	    
-	    margin-right: 3%;
-	    width: 26%;
-	    height: 26%;
-	    margin:0;
-	 }     
+		margin-top: 40px;
+		margin-bottom:-30px;
+		margin-right: 3280px;
+		width: 230px;
+		
+	   }
+	
 	  .top-menu{
-	   margin-top: -2rem;
-       margin-bottom: 3rem;
+       margin-top: -22px;
+       margin-botton:820px; 
        text-align: right;
-       margin-right: -3rem;
+	   text: bold;
 	  }
 	 
-	  .button-color{
-	   background-color: #00B050;
-	   border-color: #00B050;
-	   margin-left: 0.5rem;
-       width: 70px;
-	  }
+	 .button-color {
+	 
+	  background-color: #00B050 !important;
+	  border-color : #00B050 !important;
+	  margin-left : 0.5rem !important;
+	 
+	 }
 	  .font-color{
 	  color:#00B050;
 	  font-weight: bolder;
 	  }
 	  
-	  .whole-size{
-	  margin: auto;
-      min-width: 1110px;
+	
+	
+	 .hr-style{
+	  margin-bottom: 2px;
+      color: #00B050;
+      height: 1px;
+      opacity: .5;
+     } 
+     
+  
+    .search{
+     margin-top: -20px;
+     margin-botton:600px;
+     margin-right: 250px;
+     }
+     
+     .item-sell{
+     margin-top: -40px;
+     margin-left: 340px;
+     }
 	 }
 	</style>
 </head>  
@@ -54,30 +72,32 @@
 <br><br>
 
 <div class="container  text-center">
-   	<div class="align-items-start top-menu">				
+   	<div class="align-items-start top-menu">		
+   	       	
 			<c:if test="${not empty sessionScope.loginData}">
-                     <b>${sessionScope.loginData.accountid} 님 환영합니다</b>
-                    <a style="color:#00B050;" href="/home/notice">공지사항</a>
-					<a style="color:#00B050;" href="/home/myinfo/main">마이페이지</a>
-					<a style="color:#00B050;" href="/home/board/upload">게시글 업로드</a>
-					<a style="color:#00B050;" href="/home/logout">로그아웃</a>
+                     <b style="color:gray;">${sessionScope.loginData.accountid}</b> 님 환영합니다! &nbsp;&nbsp;&nbsp; 
+	                <a style="color:#00B050;" href="/home/notice">공지사항</a>		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					<a style="color:#00B050;" href="/home/myinfo/main">마이페이지</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					<a style="color:#00B050;" href="/home/logout">로그아웃</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					<a style="color:#00B050;" href="/home/board/upload"> 판매하기</a> 
 			</c:if>
+			 	
 			<c:if test="${empty sessionScope.loginData}">
-				    <a style="color:#00B050;" href="/home/notice">공지사항</a>
+				    <a style="color:#00B050;" href="/home/notice">공지사항</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 					<a style="color:#00B050;" href="/home/login">로그인</a>
 			</c:if>
      </div>
 
 	<div class="align-items-start">
-	 <div class="search">
-			<img id="previewImg" class="image-360 profile-size" alt="profile" src="./static/img/logo.png" onclick="location.href='/home'">
-			<input class="text_wide "style="height:39px" type="text" id="keywordInput" name="keyword" value="${scri.keyword}">			   
+	
+			<img id="previewImg" class="image-360 profile-size" alt="profile" src="./static/img/newlogo2.png" onerror="this.src='../static/img/newlogo2.png'"  onclick="location.href='/home'">
+	
+	</div>	
+     <div class="search">
+			<input class="text_wide" style="height:39px" type="text" id="keywordInput" name="keyword" value="${scri.keyword}">			   
 			<button class="btn btn-secondary button-color" id="searchBtn">검 색</button>
-	</div>		
-
-		        
-	</div>
+	  </div>
 </div>
 
 <br>
-<hr>
+<hr class="hr-style">
